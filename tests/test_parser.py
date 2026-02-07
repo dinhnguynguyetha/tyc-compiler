@@ -64,3 +64,5 @@ def test_assignment_simple():
     """10. Assignment statement"""
     source = "void main() { int x; x = 5; }"
     assert Parser(source).parse() == "success"
+
+# ========== Additional Test Cases (100 types) ==========
