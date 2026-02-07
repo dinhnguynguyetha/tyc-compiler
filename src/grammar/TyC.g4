@@ -27,8 +27,8 @@ options{
 // TODO: Define grammar rules here
 program: (structDecl | funcDecl)* EOF;
 
-structDecl: STRUCT ID LBRACE structMember* RBRACE SEMI;
-structMember: typeType ID SEMI;
+structDecl: STRUCT ID LBRACE structMem* RBRACE SEMI;
+structMem: typeType ID SEMI;
 
 varDecl: 
     AUTO ID ASSIGN expr SEMI
@@ -36,7 +36,7 @@ varDecl:
   | typeType ID (ASSIGN expr)? SEMI
   ;
 
-funcDecl: (typeType | VOID)? ID LP (paramList)? RP blockStmt;
+funcDecl: (typeType | VOID)? ID LP (paramList)? RP stmtBlock;
 
 paramList: paramDecl (COMMA paramDecl)*;
 paramDecl: typeType ID;
@@ -45,7 +45,7 @@ typeType: INT | FLOAT | STRING | ID;
 
 stmt: 
     varDecl
-  | blockStmt
+  | stmtBlock
   | ifStmt
   | whileStmt
   | forStmt
@@ -56,7 +56,7 @@ stmt:
   | exprStmt
   ;
 
-blockStmt: LBRACE stmt* RBRACE;
+stmtBlock: LBRACE stmt* RBRACE;
 
 ifStmt: IF LP expr RP stmt (ELSE stmt)?;
 
@@ -162,16 +162,16 @@ FLOATLIT:
   | [0-9]+ [eE] [+-]? [0-9]+
   ;
 
-INTLIT: [0-9]+; // Spec says decimal only
+INTLIT: [0-9]+; 
 
-STRINGLIT: '"' ( ~["\\\r\n] | '\\' [bfnrt"\\] )* '"';
+STRINGLIT: '"' ( ~["\\\r\n] | '\\' [bfnrt"\\] )* '"' { self.text = self.text[1:-1] };
 
 ID: [a-zA-Z_] [a-zA-Z0-9_]*;
 
 BLOCK_COMMENT: '/*' .*? '*/' -> skip;
 LINE_COMMENT: '//' ~[\r\n]* -> skip;
 
-WS : [ \t\r\n]+ -> skip ; // skip spaces, tabs
+WS : [ \t\r\n]+ -> skip ;
 
 ERROR_CHAR: .;
 ILLEGAL_ESCAPE: '"' ( ~["\\\r\n] | '\\' [bfnrt"\\] )* '\\' ~[bfnrt"\\];
