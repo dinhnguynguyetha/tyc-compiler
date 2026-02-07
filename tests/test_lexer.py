@@ -462,3 +462,89 @@ def test_illegal_escape_sequence():
     with pytest.raises(Exception):
         tokenizer.get_tokens_as_string()
 
+def test_float_zero_variations():
+    """86. Float literal zero variations"""
+    tokenizer = Tokenizer("0.0")
+    assert tokenizer.get_tokens_as_string() == "0.0,<EOF>"
+
+def test_string_empty():
+    """87. Empty string literal"""
+    tokenizer = Tokenizer('""')
+    assert tokenizer.get_tokens_as_string() == ",<EOF>"
+
+def test_string_with_symbols():
+    """88. String with special symbols"""
+    tokenizer = Tokenizer('"@#$%^&*(){}"')
+    assert tokenizer.get_tokens_as_string() == "@#$%^&*(){},<EOF>"
+
+def test_sticky_operators_parens():
+    """87. Sticky tokens: Parens and identifiers"""
+    tokenizer = Tokenizer("func(a,b)")
+    assert tokenizer.get_tokens_as_string() == "func,(,a,,,b,),<EOF>"
+
+def test_sticky_arithmetic():
+    """88. Sticky tokens: Arithmetic without spaces"""
+    tokenizer = Tokenizer("1+2*3-4")
+    assert tokenizer.get_tokens_as_string() == "1,+,2,*,3,-,4,<EOF>"
+
+def test_sticky_relational():
+    """89. Sticky tokens: Relational operators"""
+    tokenizer = Tokenizer("a>=b")
+    assert tokenizer.get_tokens_as_string() == "a,>=,b,<EOF>"
+
+def test_sticky_member_access():
+    """90. Sticky tokens: Struct member access"""
+    tokenizer = Tokenizer("person.name")
+    assert tokenizer.get_tokens_as_string() == "person,.,name,<EOF>"
+
+def test_sticky_semicolon():
+    """91. Sticky tokens: Semicolon after literal"""
+    tokenizer = Tokenizer("return 0;")
+    assert tokenizer.get_tokens_as_string() == "return,0,;,<EOF>"
+
+def test_identifier_containing_keyword():
+    """92. Identifier containing keyword text"""
+    tokenizer = Tokenizer("autoPilot format whileLoop")
+    assert tokenizer.get_tokens_as_string() == "autoPilot,format,whileLoop,<EOF>"
+
+def test_keywords_case_sensitivity():
+    """93. Keywords are case sensitive (should be identifiers)"""
+    tokenizer = Tokenizer("If While Return")
+    assert tokenizer.get_tokens_as_string() == "If,While,Return,<EOF>"
+
+def test_identifier_end_with_underscore():
+    """94. Identifier ending with underscore"""
+    tokenizer = Tokenizer("variable_")
+    assert tokenizer.get_tokens_as_string() == "variable_,<EOF>"
+
+def test_fragment_struct_declaration():
+    """95. Struct declaration fragment"""
+    tokenizer = Tokenizer("struct Point { int x; int y; };")
+    assert tokenizer.get_tokens_as_string() == "struct,Point,{,int,x,;,int,y,;,},;,<EOF>"
+
+def test_fragment_array_access_simulation():
+    """96. Function call fragment"""
+    tokenizer = Tokenizer("printInt(arr);")
+    assert tokenizer.get_tokens_as_string() == "printInt,(,arr,),;,<EOF>"
+
+def test_fragment_increment_loop():
+    """97. Increment in loop context"""
+    tokenizer = Tokenizer("i++;")
+    assert tokenizer.get_tokens_as_string() == "i,++,;,<EOF>"
+
+def test_illegal_escape_sequence_x():
+    """98. Illegal escape sequence (hex not supported)"""
+    tokenizer = Tokenizer(r'"Hex \x01"')
+    with pytest.raises(Exception):
+        tokenizer.get_tokens_as_string()
+
+def test_illegal_escape_quote():
+    """99. Illegal escape inside string"""
+    tokenizer = Tokenizer(r'"Bad \q escape"')
+    with pytest.raises(Exception):
+        tokenizer.get_tokens_as_string()
+
+def test_float_multiple_dots():
+    """100. Malformed float (multiple dots)"""
+    tokenizer = Tokenizer("1.2.3")
+    assert tokenizer.get_tokens_as_string() == "1.2,.,3,<EOF>"
