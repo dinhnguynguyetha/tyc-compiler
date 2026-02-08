@@ -62,7 +62,7 @@ ifStmt: IF LP expr RP stmt (ELSE stmt)?;
 
 whileStmt: WHILE LP expr RP stmt;
 
-forStmt: FOR LP (scalarVarDecl | assignExpr | ) SEMI (expr)? SEMI (assignExpr | expr)? RP stmt;
+forStmt: FOR LP (scalarVarDecl | assignExpr)? SEMI (expr)? SEMI (assignExpr | expr)? RP stmt;
 scalarVarDecl: (AUTO | typeType) ID (ASSIGN expr)?; 
 
 switchStmt: SWITCH LP expr RP LBRACE (caseStmt | defaultStmt)* RBRACE;
@@ -162,6 +162,8 @@ FLOATLIT:
 
 INTLIT: [0-9]+; 
 
+ILLEGAL_ESCAPE: '"' ( ~["\\\r\n] | '\\' [bfnrt"\\] )* '\\' ~[bfnrt"\\];
+UNCLOSE_STRING: '"' ( ~["\\\r\n] | '\\' [bfnrt"\\] )* ( [\r\n] | EOF );
 STRINGLIT: '"' ( ~["\\\r\n] | '\\' [bfnrt"\\] )* '"' { self.text = self.text[1:-1] };
 
 ID: [a-zA-Z_] [a-zA-Z0-9_]*;
@@ -169,8 +171,6 @@ ID: [a-zA-Z_] [a-zA-Z0-9_]*;
 BLOCK_COMMENT: '/*' .*? '*/' -> skip;
 LINE_COMMENT: '//' ~[\r\n]* -> skip;
 
-WS : [ \t\r\n]+ -> skip ;
+WS : [ \t\r\n\f]+ -> skip ;
 
-ILLEGAL_ESCAPE: '"' ( ~["\\\r\n] | '\\' [bfnrt"\\] )* '\\' ~[bfnrt"\\];
-UNCLOSE_STRING: '"' ( ~["\\\r\n] | '\\' [bfnrt"\\] )* ( [\r\n] | EOF );
 ERROR_CHAR: .;

@@ -575,7 +575,7 @@ def test_string_escaped_backslash_path():
 def test_whitespace_form_feed():
     """109. Whitespace: Form feed (\f) should be skipped"""
     tokenizer = Tokenizer("int\fx") 
-    assert "Error Token" in tokenizer.get_tokens_as_string()
+    assert tokenizer.get_tokens_as_string() == "int,x,<EOF>"
 
 def test_struct_declaration_basic():
     """110. Struct declaration syntax"""

@@ -588,16 +588,8 @@ def test_err_misplaced_return_in_void():
     except Exception:
         assert True
 
-def test_err_unclosed_string():
-    """91. Error: Unclosed string literal"""
-    source = "void main() { string s = \"Hello World; }"
-    try:
-        Parser(source).parse()
-    except Exception:
-        assert True
-
 def test_err_invalid_nested_struct():
-    """92. Error: Invalid nested struct declaration"""
+    """91. Error: Invalid nested struct declaration"""
     source = "struct A { struct B { int x; }; };"
     try:
         Parser(source).parse()
@@ -605,7 +597,7 @@ def test_err_invalid_nested_struct():
         assert True
 
 def test_err_incorrect_while_syntax():
-    """93. Error: Incorrect while loop syntax"""
+    """92. Error: Incorrect while loop syntax"""
     source = "void main() { while 1) { } }"
     try:
         Parser(source).parse()
@@ -613,7 +605,7 @@ def test_err_incorrect_while_syntax():
         assert True
 
 def test_err_invalid_pointer_usage():
-    """94. Error: Invalid pointer usage"""
+    """93. Error: Invalid pointer usage"""
     source = "void main() { int* p = &5; }"
     try:
         Parser(source).parse()
@@ -621,7 +613,7 @@ def test_err_invalid_pointer_usage():
         assert True
 
 def test_err_incorrect_logical_not():
-    """95. Error: Incorrect logical NOT usage"""
+    """94. Error: Incorrect logical NOT usage"""
     source = "void main() { bool b = !; }"
     try:
         Parser(source).parse()
@@ -629,7 +621,7 @@ def test_err_incorrect_logical_not():
         assert True
 
 def test_err_misplaced_struct_decl():
-    """96. Error: Misplaced struct declaration inside function"""
+    """95. Error: Misplaced struct declaration inside function"""
     source = "void main() { struct Point { int x; int y; }; }"
     try:
         Parser(source).parse()
@@ -637,7 +629,7 @@ def test_err_misplaced_struct_decl():
         assert True
 
 def test_err_invalid_ternary_syntax():
-    """97. Error: Invalid ternary operator syntax"""
+    """96. Error: Invalid ternary operator syntax"""
     source = "void main() { int x = a ? b : ; }"
     try:
         Parser(source).parse()
@@ -645,7 +637,7 @@ def test_err_invalid_ternary_syntax():
         assert True
 
 def test_err_incorrect_case_expression():
-    """98. Error: Incorrect case expression"""
+    """97. Error: Incorrect case expression"""
     source = "void main() { switch(x) { case (1 + ): break; } }"
     try:
         Parser(source).parse()
@@ -653,7 +645,7 @@ def test_err_incorrect_case_expression():
         assert True
 
 def test_err_invalid_unary_plus():
-    """99. Error: Invalid unary plus usage"""
+    """98. Error: Invalid unary plus usage"""
     source = "void main() { int x = +; }"
     try:
         Parser(source).parse()
@@ -661,7 +653,7 @@ def test_err_invalid_unary_plus():
         assert True
 
 def test_err_misplaced_break_in_switch():
-    """100. Error: Misplaced break statement in switch"""
+    """99. Error: Misplaced break statement in switch"""
     source = "void main() { switch(x) { break; } }"
     try:
         Parser(source).parse()
@@ -669,7 +661,7 @@ def test_err_misplaced_break_in_switch():
         assert True
 
 def test_err_incorrect_array_decl_size():
-    """101. Error: Incorrect array declaration size"""
+    """100. Error: Incorrect array declaration size"""
     source = "void main() { int arr[-5]; }"
     try:
         Parser(source).parse()
@@ -677,7 +669,7 @@ def test_err_incorrect_array_decl_size():
         assert True
 
 def test_err_invalid_float_exponent():
-    """102. Error: Invalid float exponent format"""
+    """101. Error: Invalid float exponent format"""
     source = "void main() { float f = 1.2e+; }"
     try:
         Parser(source).parse()
@@ -685,7 +677,7 @@ def test_err_invalid_float_exponent():
         assert True
 
 def test_err_incorrect_struct_syntax():
-    """103. Error: Incorrect struct syntax"""
+    """102. Error: Incorrect struct syntax"""
     source = "struct Point { int x int y; };"
     try:
         Parser(source).parse()
@@ -693,7 +685,7 @@ def test_err_incorrect_struct_syntax():
         assert True
 
 def test_err_invalid_function_return():
-    """104. Error: Invalid function return type"""
+    """103. Error: Invalid function return type"""
     source = "auto func() { return 5; }"
     try:
         Parser(source).parse()
@@ -701,7 +693,7 @@ def test_err_invalid_function_return():
         assert True
 
 def test_err_misplaced_continue_in_switch():
-    """105. Error: Misplaced continue statement in switch"""
+    """104. Error: Misplaced continue statement in switch"""
     source = "void main() { switch(x) { continue; } }"
     try:
         Parser(source).parse()
@@ -709,7 +701,7 @@ def test_err_misplaced_continue_in_switch():
         assert True
 
 def test_err_incorrect_char_escape():
-    """106. Error: Incorrect character escape sequence"""
+    """105. Error: Incorrect character escape sequence"""
     source = "void main() { char c = '\\q'; }"
     try:
         Parser(source).parse()
@@ -717,7 +709,7 @@ def test_err_incorrect_char_escape():
         assert True
     
 def test_err_invalid_logical_and():
-    """107. Error: Invalid logical AND usage"""
+    """106. Error: Invalid logical AND usage"""
     source = "void main() { bool b = &&a; }"
     try:
         Parser(source).parse()
@@ -725,7 +717,7 @@ def test_err_invalid_logical_and():
         assert True
 
 def test_err_misplaced_return_in_loop():
-    """108. Error: Return statement inside loop without function context"""
+    """107. Error: Return statement inside loop without function context"""
     source = "void main() { while(1) { return; } }"
     try:
         Parser(source).parse()
@@ -733,7 +725,7 @@ def test_err_misplaced_return_in_loop():
         assert True
 
 def test_err_incorrect_struct_member_access():
-    """109. Error: Incorrect struct member access syntax"""
+    """108. Error: Incorrect struct member access syntax"""
     source = "void main() { int x = point->x; }"
     try:
         Parser(source).parse()
@@ -741,9 +733,14 @@ def test_err_incorrect_struct_member_access():
         assert True
 
 def test_err_invalid_function_param():
-    """110. Error: Invalid function parameter syntax"""
+    """109. Error: Invalid function parameter syntax"""
     source = "void func(int a, , float b) { }"
     try:
         Parser(source).parse()
     except Exception:
         assert True
+
+def test_func_call_struct_literal_arg():
+    """110. Function call passing struct literals as arguments"""
+    source = "void main() { drawRect({0, 0}, {10, 20}, \"Red\"); }"
+    assert Parser(source).parse() == "success"
