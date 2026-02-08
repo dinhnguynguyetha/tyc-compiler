@@ -171,6 +171,6 @@ LINE_COMMENT: '//' ~[\r\n]* -> skip;
 
 WS : [ \t\r\n]+ -> skip ;
 
-ERROR_CHAR: .;
 ILLEGAL_ESCAPE: '"' ( ~["\\\r\n] | '\\' [bfnrt"\\] )* '\\' ~[bfnrt"\\];
-UNCLOSE_STRING: '"' ( ~["\\\r\n] | '\\' [bfnrt"\\] )* [\r\n] | EOF;
+UNCLOSE_STRING: '"' ( ~["\\\r\n] | '\\' [bfnrt"\\] )* ( [\r\n] | EOF );
+ERROR_CHAR: .;
