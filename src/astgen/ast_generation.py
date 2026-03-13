@@ -31,7 +31,7 @@ class ASTGeneration(TyCVisitor):
     def visitVarDecl(self, ctx: TyCParser.VarDeclContext):
         name = ctx.ID().getText()
         if ctx.AUTO():
-            typ = "auto"
+            typ = None
         else:
             typ = self.visit(ctx.typeType())
         init = self.visit(ctx.expr()) if ctx.expr() else None
@@ -46,7 +46,7 @@ class ASTGeneration(TyCVisitor):
         elif ctx.typeType():
             return_type = self.visit(ctx.typeType())
         else:
-            return_type = "auto"
+            return_type = None
             
         params = self.visit(ctx.paramList()) if ctx.paramList() else []
         body = self.visit(ctx.stmtBlock())
@@ -252,7 +252,7 @@ class ASTGeneration(TyCVisitor):
     
     def visitScalarVarDecl(self, ctx: TyCParser.ScalarVarDeclContext):
         name = ctx.ID().getText()
-        typ = "auto" if ctx.AUTO() else self.visit(ctx.typeType())
+        typ = None if ctx.AUTO() else self.visit(ctx.typeType())
         init = self.visit(ctx.expr()) if ctx.expr() else None
         return VarDecl(typ, name, init)
 
